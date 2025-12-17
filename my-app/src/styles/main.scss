@@ -1,10 +1,28 @@
-img{
-    height: 50px;
-    width: 50px;
+img {
+    height: 200px;
+    width: 150px;
+    margin-left: 3%;
 }
 
-.image, .movie{
-    margin-left: 3%;
-    vertical-align:middle;
+.movie {
+    font-size: 20px;
+    margin-left: 1%;
+}
+
+.buttons {
+    width: 20px auto;
+    margin-left: 4%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    margin-bottom: 20px;
+    button{
+        width: 55px;
+    }
+}
+
+.image,
+.movie {
+    vertical-align: middle;
     display: inline;
 }
