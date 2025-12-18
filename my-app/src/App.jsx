@@ -2,6 +2,9 @@ import React from "react";
 import "./styles/main.scss"
 import Movie from "./movie"
 import Header from "./header";
+import Footer from "./footer";
+import About,{AppInformation, Author} from "./about";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 
 const App = () => {
@@ -42,20 +45,45 @@ const App = () => {
       alert(`Dodelili ste "Dislike" za film "${movie.title}"!`);
     }
   }
+  const date = new Date();
+  const today = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`
 
   return (
-    <>
-      <Header />
-      <div>
-        {
-          movies?.length > 0 ?
-            <div>
-              {movies.map(m => (<Movie movie={m} onMessage={handleMessage} />
-              ))}
-            </div> : (<p>Nema dostupnih filmova</p>)
-        }
+    <BrowserRouter>
+      <div className="app">
+        <Header />
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<h1>Dobrodosli</h1>}></Route>
+
+            <Route path="/about" element={<About />}>
+              <Route path="appInformation" element={<AppInformation />}></Route>
+              <Route path="author" element={<Author />}></Route>
+            </Route>
+
+            <Route path="/movie" element={
+              <div>
+                <div className="title">
+                  <h1>Repertoar za danas({today})</h1>
+                </div>
+                <div>
+                  {
+                    movies?.length > 0 ?
+                      <div>
+                        {movies.map(m => (<Movie movie={m} onMessage={handleMessage} />
+                        ))}
+                      </div> : (<p>Nema dostupnih filmova</p>)
+                  }
+                </div>
+              </div>}>
+            </Route>
+
+          </Routes>
+        </main>
+
+        <Footer />
       </div>
-    </>
+    </BrowserRouter>
   );
 };
 

@@ -1,11 +1,19 @@
 import React from "react";
+import { Link, Outlet } from "react-router-dom";
+import "./styles/header.scss"
+import Movie from "./movie";
 
 const Header = () => {
-    const date = new Date();
-    const today = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`
     return (
-        <div className="header">
-            <h1>Repertoar za danas({today})</h1>
+        <div>
+            <header>
+                <h1>Bioskop</h1>
+                <nav>
+                    <Link to="/" className="link">Home</Link>
+                    <Link to="about" className="link">O nama</Link>
+                    <Link to="/movie" className="link">Filmovi</Link>
+                </nav>
+            </header>
         </div>
     )
 }

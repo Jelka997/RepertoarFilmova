@@ -1,0 +1,17 @@
+.about {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 20px;
+    color: black;
+
+    .about-link {
+        text-decoration: none; // uklanja podvlačenje
+        color: black; // boja linka
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+    .about-link:hover{
+        text-decoration: underline;
+    }
+}
