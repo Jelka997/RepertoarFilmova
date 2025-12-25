@@ -39,12 +39,16 @@ img {
 
 .buttons {
     width: 20px auto;
-    margin-left: 4%;
+    margin-left: 3%;
     display: flex;
     justify-content: flex-start;
-    gap: 5px;
+    gap: 8px;
     margin-bottom: 20px;
+    height: 27px;
 
+    p{
+        margin: 5px;
+    }
     button {
         width: 55px;
     }

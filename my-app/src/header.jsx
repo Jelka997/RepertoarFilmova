@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import "./styles/header.scss"
-import Movie from "./movie";
+import Movies from "./movies";
 
 const Header = () => {
     return (
@@ -11,7 +11,7 @@ const Header = () => {
                 <nav>
                     <Link to="/" className="link">Home</Link>
                     <Link to="about" className="link">O nama</Link>
-                    <Link to="/movie" className="link">Filmovi</Link>
+                    <Link to="/movies" className="link">Filmovi</Link>
                 </nav>
             </header>
         </div>
