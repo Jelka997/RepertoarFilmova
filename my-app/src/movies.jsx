@@ -1,6 +1,8 @@
 import movie from "./assets/movie.jpg"
-import React from "react";
+import React, { use } from "react";
 import { useState } from "react";
+import MovieForm from "./movieForm";
+import EditMovieForm from "./EditMovieForm";
 
 const Movies = () => {
 
@@ -44,18 +46,29 @@ const Movies = () => {
         }
     ];
     const [moviesState, setMoviesState] = useState(movies);
+    const [editingMovie, setEditingMovie] = useState(null);
 
     const date = new Date();
     const today = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`
 
 
-    const likeMovie = (title) => {
-        setMoviesState(prev => prev.map(movie => movie.title === title ? { ...movie, likes: movie.likes + 1 } : movie));
+    const feedback = (title, type) => {
+        if (type === "Like") {
+            setMoviesState(prev => prev.map(movie => movie.title === title ? { ...movie, likes: movie.likes + 1 } : movie));
+        } else if (type === "Dislike") {
+            setMoviesState(prev => prev.map(movie => movie.title === title ? { ...movie, dislikes: movie.dislikes + 1 } : movie));
+        }
     }
 
-    const dislikeMovie = (title) => {
-        setMoviesState(prev => prev.map(movie => movie.title === title ? { ...movie, dislikes: movie.dislikes + 1 } : movie));
+    const addNewMovie = (movie) => {
+        console.log("data from parent:", movie);
+        setMoviesState(prev => [...prev, movie]);
     }
+
+    const editMovie = (data) => {
+        setMoviesState(prev => prev.map(element => (element.title === data.title ? data : element)));
+        setEditingMovie(null);
+    };
 
     return (
         <div className="container">
@@ -71,13 +84,20 @@ const Movies = () => {
                         {movie.price ? " cena: " + movie.price + "din" : " 300din"}
                     </div>
                     <div className="buttons">
-                        <button onClick={() => likeMovie(movie.title)}>Like</button>
+                        <button onClick={() => feedback(movie.title, "Like")}>Like</button>
                         <p>{movie.likes}</p>
-                        <button onClick={() => dislikeMovie(movie.title)}>Dislike</button>
+                        <button onClick={() => feedback(movie.title, "Dislike")}>Dislike</button>
                         <p>{movie.dislikes}</p>
+                        <button onClick={() => setEditingMovie(movie)}>Edit</button>
                     </div>
                 </div>
             ))}
+
+            {editingMovie ? (
+                <EditMovieForm movie={editingMovie} onUpdate={editMovie} />
+            ) : (
+                <MovieForm onAddMovie={addNewMovie} />
+            )}
         </div>
     );
 }
