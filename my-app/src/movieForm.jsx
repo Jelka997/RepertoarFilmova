@@ -7,8 +7,8 @@ const MovieForm = ({ onAddMovie }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const submitForm = (data) => {
-        data.likes = 0;
-        data.dislikes = 0;
+        data.likes = Math.floor(Math.random() * 5) + 1;
+        data.dislikes = Math.floor(Math.random() * 5) + 1;
         onAddMovie(data);
         reset();
     }

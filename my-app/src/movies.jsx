@@ -1,6 +1,6 @@
 import movie from "./assets/movie.jpg"
 import React, { use } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieForm from "./movieForm";
 import EditMovieForm from "./EditMovieForm";
 
@@ -51,6 +51,21 @@ const Movies = () => {
     const date = new Date();
     const today = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`
 
+    useEffect(() => {
+        console.log("Postavka filmova");
+        return () => {
+            console.log("Sklanjanje filmova");
+        };
+    }, []);
+    
+    useEffect(() => {
+        if (moviesState.length === 0)
+            return;
+        const sorted = [...moviesState].sort((a, b) => (b.likes - b.dislikes) - (a.likes - a.dislikes));
+        if (sorted[0].title !== moviesState[0].title) {
+            setMoviesState(sorted);
+        }
+    }, [moviesState]);
 
     const feedback = (title, type) => {
         if (type === "Like") {
