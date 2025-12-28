@@ -5,7 +5,7 @@ import Header from "./header";
 import Footer from "./footer";
 import About,{AppInformation, Author} from "./about";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
+import MovieForm from "./movieForm";
 
 const App = () => {
 
@@ -23,10 +23,10 @@ const App = () => {
             </Route>
 
             <Route path="/movies" element={<Movies/>}></Route>
-
+            <Route path="/movieForm" element={<MovieForm/>}></Route>
+            <Route path="/edit-movie/:id" element={<MovieForm />}></Route>
           </Routes>
         </main>
-
         <Footer />
       </div>
     </BrowserRouter>
