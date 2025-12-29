@@ -15,7 +15,6 @@ const MovieForm = () => {
     const navigate = useNavigate();
     const params = useParams();
     const id = params.id;
-    console.log("ID iz URL-a:", id);
 
     useEffect(() => {
         if (!id) return;
@@ -56,6 +55,7 @@ const MovieForm = () => {
         }
     }
 
+   
     return (
         <div>
             {err && <p style={{ color: 'red' }}>{err}</p>}

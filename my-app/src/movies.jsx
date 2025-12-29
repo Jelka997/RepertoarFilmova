@@ -2,6 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { getAllMovies, getMovieById } from "./services/movieService";
 import { useNavigate } from "react-router-dom";
+import { deleteMovie } from "./services/movieService";
+import { addMovieLike, addMovieDislike } from "./services/movieService";
+
 
 const Movies = () => {
     const [movies, setMovies] = useState([]);
@@ -20,8 +23,47 @@ const Movies = () => {
         } catch (err) {
             setError("Greska pri ucitavanju filmova");
         }
-        finally{
+        finally {
             setLoading(false);
+        }
+    }
+
+    async function deleteOneMovie(id) {
+        try {
+            if (id) {
+                await deleteMovie(id);
+                setError('');
+                loadMovies();
+            }
+        }
+        catch (errorMessage) {
+            setError("Greska sa servera - " + errorMessage);
+        }
+
+    }
+
+    const feedbacks = (id, type) => {
+        setMovies(prev =>
+            prev.map(movie =>
+                movie.id === id
+                    ? {
+                        ...movie,
+                        likes: type === "Like" ? movie.likes + 1 : movie.likes,
+                        dislikes: type === "Dislike" ? movie.dislikes + 1 : movie.dislikes
+                    }
+                    : movie
+            )
+        );
+
+        try {
+            if (type === "Like") {
+                addMovieLike(id);
+
+            } else if (type === "Dislike") {
+                addMovieDislike(id);
+            }
+        } catch (errorMessage) {
+            setError("Greska sa servera - " + errorMessage);
         }
     }
 
@@ -43,39 +85,42 @@ const Movies = () => {
         }
     }, [movies]);
 
-    const feedback = (id, type) => {
-        if (type === "Like") {
-            setMovies(prev => prev.map(movie => movie.id === id ? { ...movie, likes: movie.likes + 1 } : movie));
-        } else if (type === "Dislike") {
-            setMovies(prev => prev.map(movie => movie.id === id ? { ...movie, dislikes: movie.dislikes + 1 } : movie));
-        }
-    }
-
     return (
         <div className="container">
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            {!loading ? <h1>Repertoar filmova za danas ({today})</h1> : <div className="spinner"></div>}
-            {!loading && movies.map((movie) => (
-                <div key={movie.id} className="movie-card">
-                    <div className="image">
-                        <img alt={movie.title} src={movie.poster} />
-                    </div>
-                    <div className="movie">
-                        {movie.name},
-                        {" Hall: " + movie.hall},
-                        {" Price: " + movie.price}
-                    </div>
-                    <div className="buttons">
-                        <button onClick={() => feedback(movie.id, "Like")}>Like</button>
-                        <p>{movie.likes}</p>
-                        <button onClick={() => feedback(movie.id, "Dislike")}>Dislike</button>
-                        <p>{movie.dislikes}</p>
-                        <button onClick={() => navigate(`/edit-movie/${movie.id}`)}>Edit</button>
-                    </div>
-                </div>
-            ))}
 
+            {loading ? (
+                <div className="spinner"></div>
+            ) : (
+                <>
+                    <h1>Repertoar filmova za danas ({today})</h1>
 
+                    {movies.map((movie) => (
+                        <div key={movie.id} className="movie-card">
+                            <div className="image">
+                                <img alt={movie.title} src={movie.poster} />
+                            </div>
+
+                            <div className="movie">
+                                {movie.name},
+                                {" Hall: " + movie.hall},
+                                {" Price: " + movie.price}
+                            </div>
+
+                            <div className="buttons">
+                                <button onClick={() => feedbacks(movie.id, "Like")}>Like</button>
+                                <p>{movie.likes}</p>
+
+                                <button onClick={() => feedbacks(movie.id, "Dislike")}>Dislike</button>
+                                <p>{movie.dislikes}</p>
+
+                                <button onClick={() => navigate(`/edit-movie/${movie.id}`)}>Edit</button>
+                                <button type="button" onClick={() => deleteOneMovie(movie.id)}>Delete</button>
+                            </div>
+                        </div>
+                    ))}
+                </>
+            )}
         </div>
     );
 }

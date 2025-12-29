@@ -23,7 +23,7 @@ export async function updateMovie(id, movieData){
 }
 
 export async function deleteMovie(id) {
-    const response = await AxiosConfi.delete(`${RESOURCE}/${id}`);
+    const response = await AxiosConfig.delete(`${RESOURCE}/${id}`);
     return response.data;
 }
 
